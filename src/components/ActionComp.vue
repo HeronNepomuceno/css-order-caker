@@ -20,11 +20,29 @@
 					<h3>Write your css in the textarea and click in the button:</h3>
 				</div>
 				<div class="order-body">
-					<textarea class="input"></textarea>
+					<div class="input-wrapper">
+						<textarea class="input"></textarea>
+						<div class="button-wrapper">
+							<button class="clear" title="Limpar" @click="clearAll">
+								<svg>
+									<use xlink:href="../assets/sprite.svg#clear"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
 					<svg>
 						<use xlink:href="../assets/sprite.svg#right-arrow"></use>
 					</svg>
+					<div class="output-wrapper">
 					<textarea class="output" v-model="output_css" disabled> </textarea>
+					<div class="button-wrapper">
+						<button class="copy" @click="copyNewCss">
+								<svg>
+									<use xlink:href="../assets/sprite.svg#copy"></use>
+								</svg>
+						</button>
+					</div>
+					</div>
 				</div>
 				<div class="order-footer">
 					<button class="order" @click="getInputCss">Order</button>
@@ -83,7 +101,7 @@ export default {
 			// Pegando o nome de todas as classes
 			for (let i = 0; i <= old_css_covert.length-1; i++) {
 				let inside = old_css_covert[i].substring(
-					old_css_covert[i].indexOf('#') + 1, 
+					old_css_covert[i].indexOf('.') + 1, 
 					old_css_covert[i].lastIndexOf("{")
 				)
 				class_name_css.push(inside)
@@ -113,6 +131,20 @@ export default {
 			}
 			this.output_css = order_css.toString()
 			this.output_css = this.output_css.replace(/,/g, '\n')
+		},
+
+		clearAll() {
+			this.input_css = ''
+			this.output_css = ''
+			document.querySelector('.input').value = ''
+			document.querySelector('.output').value = ''
+		},
+
+		copyNewCss() {
+			let new_css = document.querySelector('.output')
+			new_css.select()
+			new_css.setSelectionRange(0, 99999)
+			navigator.clipboard.writeText(new_css.value)
 		}
 	}
 }
@@ -185,10 +217,43 @@ export default {
 	width 100%
 	margin-top 32px
 
+	.input-wrapper
+		display flex
+		flex-direction column
+
 	.input
 		width 400px
 		height 280px
 		font-size 14px
+
+	.button-wrapper
+		width 100%
+		display flex
+		justify-content flex-end
+
+	.clear, .copy
+		width 48px
+		height 48px
+		background var(--bgColorSecondary)
+		border-radius 15px
+		border 1px solid #31111D
+		opacity 1
+		transition opacity, transform, .5s, .5s
+		display flex
+		justify-content center
+		align-items center
+		margin-top -64px
+		margin-right 16px
+
+		&:hover
+			opacity .8
+
+		&:active
+			transform scale(.9)
+
+		svg
+			height 24px
+			width 24px
 
 	svg
 		height 32px
@@ -222,4 +287,5 @@ export default {
 
 		&:active
 			transform scale(.9)
+
 </style>
