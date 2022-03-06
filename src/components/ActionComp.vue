@@ -96,11 +96,13 @@ export default {
 		gerateOrderCss(class_name, css_order_inside) {
 			let order_css = []
 
+			// Juntando o array de classes com o array de items ordernados em ordem alfabética
 			for (let i = 0; i <= class_name.length-1; i++) {
 				let inside = `.${class_name[i]} {\n${css_order_inside[i]}}`
 				order_css.push(inside)
 			}
 			
+			// Formatação da string para uma melhor visualização no input
 			for (let i = 0; i <= order_css.length-1; i++){
 				order_css[i] = order_css[i].replace(/,/g, ';')
 				order_css[i] = order_css[i].replace(';', ' ')
@@ -109,7 +111,6 @@ export default {
 				order_css[i] = order_css[i].replace(/{/g, ' {')
 				order_css[i] = order_css[i].replace(/,/g, ' \n')
 			}
-
 			this.output_css = order_css.toString()
 			this.output_css = this.output_css.replace(/,/g, '\n')
 		}
